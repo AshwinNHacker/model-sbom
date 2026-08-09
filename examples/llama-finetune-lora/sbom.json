@@ -1,0 +1,256 @@
+{
+  "bom_format": "ModelSBOM",
+  "spec_version": "1.0.0",
+  "serial_number": "urn:uuid:28a1f1f8-d8d4-4cc8-b7e9-4e29d025ba6c",
+  "version": 1,
+  "metadata": {
+    "tool_name": "model-sbom",
+    "tool_version": "1.0.0",
+    "authors": [
+      "ml-platform-team@acme.example"
+    ],
+    "organization": "Acme Corp",
+    "timestamp": "2026-08-06T18:34:40.999029+00:00",
+    "description": "Support-ticket triage assistant: Llama-3-8B base model, fine-tuned with a LoRA adapter on cleaned internal support ticket data, then merged and quantized for deployment."
+  },
+  "components": [
+    {
+      "id": "basemodel-04428075e3b2",
+      "type": "base_model",
+      "name": "Llama-3-8B",
+      "version": "3.0",
+      "supplier": "Meta",
+      "license": "Llama3-Community-License",
+      "license_note": "Redistribution of derivatives requires the 'Built with Llama 3' notice per Meta's community license.",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "6255887a756104cf94678d4c476b56dbec74e3713d1453de823e905937b58527"
+      },
+      "external_refs": [
+        {
+          "ref_type": "huggingface",
+          "uri": "meta-llama/Meta-Llama-3-8B",
+          "revision": "main"
+        }
+      ],
+      "created_at": "2026-08-06T18:34:40.999094+00:00",
+      "notes": "Downloaded and pinned to a specific commit revision for reproducibility.",
+      "properties": {
+        "parameter_count": 8000000000,
+        "architecture": "transformer-decoder, GQA, 8B params, 8K context",
+        "training_data_cutoff": "2024-03"
+      }
+    },
+    {
+      "id": "tokenizer-2fdf0156a3b2",
+      "type": "tokenizer",
+      "name": "llama-3-tokenizer",
+      "version": "3.0",
+      "supplier": "Meta",
+      "license": "Llama3-Community-License",
+      "license_note": "",
+      "checksum": null,
+      "external_refs": [
+        {
+          "ref_type": "huggingface",
+          "uri": "meta-llama/Meta-Llama-3-8B",
+          "revision": "main"
+        }
+      ],
+      "created_at": "2026-08-06T18:34:40.999117+00:00",
+      "notes": "",
+      "properties": {
+        "vocab_size": 128256
+      }
+    },
+    {
+      "id": "dataset-718678d4512a",
+      "type": "dataset",
+      "name": "support-tickets-raw-export",
+      "version": "2026-05-01",
+      "supplier": "Acme Corp (internal)",
+      "license": "Proprietary",
+      "license_note": "Internal data; not for external distribution.",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "4163fb4ab9e1e0a51709a51bc7e13ab6792907905960145c722d2c1479caac42"
+      },
+      "external_refs": [
+        {
+          "ref_type": "s3",
+          "uri": "s3://acme-ml-data/support-tickets/raw/2026-05-01/"
+        }
+      ],
+      "created_at": "2026-08-06T18:34:40.999143+00:00",
+      "notes": "Direct export from the support ticketing system, unfiltered.",
+      "properties": {
+        "lineage_stage": "raw_collection",
+        "record_count": 52104,
+        "pii_reviewed": null,
+        "source_uri": "s3://acme-ml-data/support-tickets/raw/2026-05-01/"
+      }
+    },
+    {
+      "id": "dataset-7f989f6c6b81",
+      "type": "dataset",
+      "name": "support-tickets-filtered",
+      "version": "2026-05-10",
+      "supplier": "Acme Corp (internal)",
+      "license": "Proprietary",
+      "license_note": "",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "2545f7706a6a945c9f1f8caea28c0c5ac971afc55e5e91e5bab5736329e55ff7"
+      },
+      "external_refs": [
+        {
+          "ref_type": "s3",
+          "uri": "s3://acme-ml-data/support-tickets/filtered/2026-05-10/"
+        }
+      ],
+      "created_at": "2026-08-06T18:34:40.999157+00:00",
+      "notes": "Removed non-English tickets, spam, and duplicate submissions.",
+      "properties": {
+        "lineage_stage": "filtered",
+        "record_count": 49850,
+        "pii_reviewed": null,
+        "source_uri": "s3://acme-ml-data/support-tickets/filtered/2026-05-10/"
+      }
+    },
+    {
+      "id": "dataset-765183bfe667",
+      "type": "dataset",
+      "name": "support-tickets-clean-final",
+      "version": "2026-06-01",
+      "supplier": "Acme Corp (internal)",
+      "license": "Proprietary",
+      "license_note": "",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "79ae95b1694411619d984687b93692614069e2aee5fea36a30042660de8b237e"
+      },
+      "external_refs": [
+        {
+          "ref_type": "s3",
+          "uri": "s3://acme-ml-data/support-tickets/clean/2026-06-01/"
+        }
+      ],
+      "created_at": "2026-08-06T18:34:40.999171+00:00",
+      "notes": "PII-scrubbed (customer names/emails/phone numbers redacted) and reviewed by the data governance team on 2026-06-02.",
+      "properties": {
+        "lineage_stage": "final_training_set",
+        "record_count": 48213,
+        "pii_reviewed": true,
+        "source_uri": "s3://acme-ml-data/support-tickets/clean/2026-06-01/"
+      }
+    },
+    {
+      "id": "adapter-52251ea90482",
+      "type": "adapter",
+      "name": "acme-support-triage-lora",
+      "version": "3",
+      "supplier": "Acme Corp (internal)",
+      "license": "Apache-2.0",
+      "license_note": "Adapter weights only; base model retains its own Meta community license.",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "991da788b329ca78ea2fc326611736a45c816f98fdbea577304ea8a27074909d"
+      },
+      "external_refs": [
+        {
+          "ref_type": "internal_registry",
+          "uri": "registry.acme.internal/adapters/support-triage-lora/v3"
+        }
+      ],
+      "created_at": "2026-08-06T18:34:40.999187+00:00",
+      "notes": "Third training run for this adapter line; v1/v2 are archived, not included in this SBOM.",
+      "properties": {
+        "method": "LoRA",
+        "rank": 16,
+        "alpha": 32,
+        "target_modules": [
+          "q_proj",
+          "k_proj",
+          "v_proj",
+          "o_proj"
+        ],
+        "trainer": "acme-ml-platform (Ray + PEFT 0.11)",
+        "training_date": "2026-07-15",
+        "hyperparameters": {
+          "learning_rate": 0.0002,
+          "epochs": 3,
+          "batch_size": 32,
+          "warmup_ratio": 0.03
+        }
+      }
+    },
+    {
+      "id": "merged-43a8454991f8",
+      "type": "merged_model",
+      "name": "acme-support-triage-model-deploy",
+      "version": "3",
+      "supplier": "Acme Corp (internal)",
+      "license": "Llama3-Community-License",
+      "license_note": "Inherits base model license terms; 'Built with Llama 3' notice included in model card.",
+      "checksum": {
+        "algorithm": "sha256",
+        "value": "69c5ca4b914f58e4faea352d47e3193dda0a8ff88d7be187152b5f7b17827d82"
+      },
+      "external_refs": [
+        {
+          "ref_type": "internal_registry",
+          "uri": "registry.acme.internal/models/support-triage/v3"
+        }
+      ],
+      "created_at": "2026-08-06T18:34:40.999201+00:00",
+      "notes": "Deployed to production inference cluster on 2026-07-20.",
+      "properties": {
+        "quantization": "int8 (bitsandbytes)"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "source_id": "basemodel-04428075e3b2",
+      "target_id": "tokenizer-2fdf0156a3b2",
+      "type": "INCLUDES",
+      "note": ""
+    },
+    {
+      "source_id": "dataset-7f989f6c6b81",
+      "target_id": "dataset-718678d4512a",
+      "type": "SOURCED_FROM",
+      "note": ""
+    },
+    {
+      "source_id": "dataset-765183bfe667",
+      "target_id": "dataset-7f989f6c6b81",
+      "type": "SOURCED_FROM",
+      "note": ""
+    },
+    {
+      "source_id": "adapter-52251ea90482",
+      "target_id": "basemodel-04428075e3b2",
+      "type": "DERIVED_FROM",
+      "note": ""
+    },
+    {
+      "source_id": "adapter-52251ea90482",
+      "target_id": "dataset-765183bfe667",
+      "type": "TRAINED_ON",
+      "note": ""
+    },
+    {
+      "source_id": "merged-43a8454991f8",
+      "target_id": "basemodel-04428075e3b2",
+      "type": "MERGED_FROM",
+      "note": ""
+    },
+    {
+      "source_id": "merged-43a8454991f8",
+      "target_id": "adapter-52251ea90482",
+      "type": "MERGED_FROM",
+      "note": ""
+    }
+  ]
+}

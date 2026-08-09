@@ -1,0 +1,9 @@
+# Core library has zero required third-party dependencies by design — the
+# data model, builder, validator (structural checks), lineage graph, diff
+# engine, and mermaid/dot exporters use only the Python standard library.
+#
+# Install dev/test tooling:
+#   pip install -r requirements-dev.txt
+#
+# Install optional JSON Schema validation support:
+#   pip install -r requirements-optional.txt

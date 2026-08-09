@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/AshwinNHacker/model-sbom/schema/model-sbom.schema.json",
+  "title": "ModelSBOM",
+  "description": "Model Supply Chain SBOM: base model provenance, fine-tuning data lineage, and adapter provenance.",
+  "type": "object",
+  "required": ["bom_format", "spec_version", "serial_number", "version", "metadata", "components", "relationships"],
+  "properties": {
+    "bom_format": { "const": "ModelSBOM" },
+    "spec_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "serial_number": { "type": "string" },
+    "version": { "type": "integer", "minimum": 1 },
+    "metadata": {
+      "type": "object",
+      "required": ["tool_name", "tool_version", "timestamp"],
+      "properties": {
+        "tool_name": { "type": "string" },
+        "tool_version": { "type": "string" },
+        "authors": { "type": "array", "items": { "type": "string" } },
+        "organization": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/component" }
+    },
+    "relationships": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/relationship" }
+    }
+  },
+  "definitions": {
+    "checksum": {
+      "type": "object",
+      "required": ["algorithm", "value"],
+      "properties": {
+        "algorithm": { "type": "string", "enum": ["sha256"] },
+        "value": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" }
+      }
+    },
+    "external_ref": {
+      "type": "object",
+      "required": ["ref_type", "uri"],
+      "properties": {
+        "ref_type": {
+          "type": "string",
+          "enum": ["huggingface", "url", "s3", "git", "internal_registry", "other"]
+        },
+        "uri": { "type": "string" },
+        "revision": { "type": "string" }
+      }
+    },
+    "component": {
+      "type": "object",
+      "required": ["id", "type", "name", "version", "supplier", "license", "created_at"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": {
+          "type": "string",
+          "enum": ["base_model", "dataset", "adapter", "merged_model", "tokenizer"]
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "supplier": { "type": "string" },
+        "license": {
+          "type": "string",
+          "enum": [
+            "Apache-2.0", "MIT", "Llama2-Community-License", "Llama3-Community-License",
+            "CC-BY-4.0", "CC-BY-SA-4.0", "CC-BY-NC-4.0", "CC0-1.0", "OpenRAIL-M",
+            "GPL-3.0", "Proprietary", "UNKNOWN", "OTHER"
+          ]
+        },
+        "license_note": { "type": "string" },
+        "checksum": {
+          "anyOf": [{ "$ref": "#/definitions/checksum" }, { "type": "null" }]
+        },
+        "external_refs": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/external_ref" }
+        },
+        "created_at": { "type": "string" },
+        "notes": { "type": "string" },
+        "properties": { "type": "object" }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "required": ["source_id", "target_id", "type"],
+      "properties": {
+        "source_id": { "type": "string", "minLength": 1 },
+        "target_id": { "type": "string", "minLength": 1 },
+        "type": {
+          "type": "string",
+          "enum": [
+            "DERIVED_FROM", "TRAINED_ON", "FINE_TUNED_FROM", "MERGED_FROM",
+            "INCLUDES", "DEPENDS_ON", "SOURCED_FROM"
+          ]
+        },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

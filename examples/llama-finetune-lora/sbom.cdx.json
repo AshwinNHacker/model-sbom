@@ -1,0 +1,425 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:28a1f1f8-d8d4-4cc8-b7e9-4e29d025ba6c",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-08-06T18:34:40.999029+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "model-sbom",
+          "version": "1.0.0"
+        }
+      ]
+    },
+    "authors": [
+      {
+        "name": "ml-platform-team@acme.example"
+      }
+    ],
+    "manufacture": {
+      "name": "Acme Corp"
+    },
+    "properties": [
+      {
+        "name": "msbom:native_format",
+        "value": "ModelSBOM"
+      },
+      {
+        "name": "msbom:native_spec_version",
+        "value": "1.0.0"
+      },
+      {
+        "name": "msbom:export_note",
+        "value": "best-effort mapping; see module docstring"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "machine-learning-model",
+      "bom-ref": "basemodel-04428075e3b2",
+      "name": "Llama-3-8B",
+      "version": "3.0",
+      "supplier": {
+        "name": "Meta"
+      },
+      "licenses": [
+        {
+          "license": {
+            "id": "Llama3-Community-License"
+          }
+        }
+      ],
+      "description": "Downloaded and pinned to a specific commit revision for reproducibility.",
+      "hashes": [
+        {
+          "alg": "SHA256",
+          "content": "6255887a756104cf94678d4c476b56dbec74e3713d1453de823e905937b58527"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "meta-llama/Meta-Llama-3-8B",
+          "comment": "ref_type=huggingface; revision=main"
+        }
+      ],
+      "properties": [
+        {
+          "name": "msbom:component_type",
+          "value": "base_model"
+        },
+        {
+          "name": "msbom:parameter_count",
+          "value": "8000000000"
+        },
+        {
+          "name": "msbom:architecture",
+          "value": "transformer-decoder, GQA, 8B params, 8K context"
+        },
+        {
+          "name": "msbom:training_data_cutoff",
+          "value": "2024-03"
+        },
+        {
+          "name": "msbom:license_note",
+          "value": "Redistribution of derivatives requires the 'Built with Llama 3' notice per Meta's community license."
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "tokenizer-2fdf0156a3b2",
+      "name": "llama-3-tokenizer",
+      "version": "3.0",
+      "supplier": {
+        "name": "Meta"
+      },
+      "licenses": [
+        {
+          "license": {
+            "id": "Llama3-Community-License"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "meta-llama/Meta-Llama-3-8B",
+          "comment": "ref_type=huggingface; revision=main"
+        }
+      ],
+      "properties": [
+        {
+          "name": "msbom:component_type",
+          "value": "tokenizer"
+        },
+        {
+          "name": "msbom:vocab_size",
+          "value": "128256"
+        }
+      ]
+    },
+    {
+      "type": "data",
+      "bom-ref": "dataset-718678d4512a",
+      "name": "support-tickets-raw-export",
+      "version": "2026-05-01",
+      "supplier": {
+        "name": "Acme Corp (internal)"
+      },
+      "licenses": [
+        {
+          "license": {
+            "id": "Proprietary"
+          }
+        }
+      ],
+      "description": "Direct export from the support ticketing system, unfiltered.",
+      "hashes": [
+        {
+          "alg": "SHA256",
+          "content": "4163fb4ab9e1e0a51709a51bc7e13ab6792907905960145c722d2c1479caac42"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "other",
+          "url": "s3://acme-ml-data/support-tickets/raw/2026-05-01/",
+          "comment": "ref_type=s3"
+        }
+      ],
+      "properties": [
+        {
+          "name": "msbom:component_type",
+          "value": "dataset"
+        },
+        {
+          "name": "msbom:lineage_stage",
+          "value": "raw_collection"
+        },
+        {
+          "name": "msbom:record_count",
+          "value": "52104"
+        },
+        {
+          "name": "msbom:source_uri",
+          "value": "s3://acme-ml-data/support-tickets/raw/2026-05-01/"
+        },
+        {
+          "name": "msbom:license_note",
+          "value": "Internal data; not for external distribution."
+        }
+      ]
+    },
+    {
+      "type": "data",
+      "bom-ref": "dataset-7f989f6c6b81",
+      "name": "support-tickets-filtered",
+      "version": "2026-05-10",
+      "supplier": {
+        "name": "Acme Corp (internal)"
+      },
+      "licenses": [
+        {
+          "license": {
+            "id": "Proprietary"
+          }
+        }
+      ],
+      "description": "Removed non-English tickets, spam, and duplicate submissions.",
+      "hashes": [
+        {
+          "alg": "SHA256",
+          "content": "2545f7706a6a945c9f1f8caea28c0c5ac971afc55e5e91e5bab5736329e55ff7"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "other",
+          "url": "s3://acme-ml-data/support-tickets/filtered/2026-05-10/",
+          "comment": "ref_type=s3"
+        }
+      ],
+      "properties": [
+        {
+          "name": "msbom:component_type",
+          "value": "dataset"
+        },
+        {
+          "name": "msbom:lineage_stage",
+          "value": "filtered"
+        },
+        {
+          "name": "msbom:record_count",
+          "value": "49850"
+        },
+        {
+          "name": "msbom:source_uri",
+          "value": "s3://acme-ml-data/support-tickets/filtered/2026-05-10/"
+        }
+      ]
+    },
+    {
+      "type": "data",
+      "bom-ref": "dataset-765183bfe667",
+      "name": "support-tickets-clean-final",
+      "version": "2026-06-01",
+      "supplier": {
+        "name": "Acme Corp (internal)"
+      },
+      "licenses": [
+        {
+          "license": {
+            "id": "Proprietary"
+          }
+        }
+      ],
+      "description": "PII-scrubbed (customer names/emails/phone numbers redacted) and reviewed by the data governance team on 2026-06-02.",
+      "hashes": [
+        {
+          "alg": "SHA256",
+          "content": "79ae95b1694411619d984687b93692614069e2aee5fea36a30042660de8b237e"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "other",
+          "url": "s3://acme-ml-data/support-tickets/clean/2026-06-01/",
+          "comment": "ref_type=s3"
+        }
+      ],
+      "properties": [
+        {
+          "name": "msbom:component_type",
+          "value": "dataset"
+        },
+        {
+          "name": "msbom:lineage_stage",
+          "value": "final_training_set"
+        },
+        {
+          "name": "msbom:record_count",
+          "value": "48213"
+        },
+        {
+          "name": "msbom:pii_reviewed",
+          "value": "True"
+        },
+        {
+          "name": "msbom:source_uri",
+          "value": "s3://acme-ml-data/support-tickets/clean/2026-06-01/"
+        }
+      ]
+    },
+    {
+      "type": "machine-learning-model",
+      "bom-ref": "adapter-52251ea90482",
+      "name": "acme-support-triage-lora",
+      "version": "3",
+      "supplier": {
+        "name": "Acme Corp (internal)"
+      },
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "description": "Third training run for this adapter line; v1/v2 are archived, not included in this SBOM.",
+      "hashes": [
+        {
+          "alg": "SHA256",
+          "content": "991da788b329ca78ea2fc326611736a45c816f98fdbea577304ea8a27074909d"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "registry.acme.internal/adapters/support-triage-lora/v3",
+          "comment": "ref_type=internal_registry"
+        }
+      ],
+      "properties": [
+        {
+          "name": "msbom:component_type",
+          "value": "adapter"
+        },
+        {
+          "name": "msbom:method",
+          "value": "LoRA"
+        },
+        {
+          "name": "msbom:rank",
+          "value": "16"
+        },
+        {
+          "name": "msbom:alpha",
+          "value": "32"
+        },
+        {
+          "name": "msbom:target_modules",
+          "value": "[\"q_proj\", \"k_proj\", \"v_proj\", \"o_proj\"]"
+        },
+        {
+          "name": "msbom:trainer",
+          "value": "acme-ml-platform (Ray + PEFT 0.11)"
+        },
+        {
+          "name": "msbom:training_date",
+          "value": "2026-07-15"
+        },
+        {
+          "name": "msbom:hyperparameters",
+          "value": "{\"batch_size\": 32, \"epochs\": 3, \"learning_rate\": 0.0002, \"warmup_ratio\": 0.03}"
+        },
+        {
+          "name": "msbom:license_note",
+          "value": "Adapter weights only; base model retains its own Meta community license."
+        }
+      ]
+    },
+    {
+      "type": "machine-learning-model",
+      "bom-ref": "merged-43a8454991f8",
+      "name": "acme-support-triage-model-deploy",
+      "version": "3",
+      "supplier": {
+        "name": "Acme Corp (internal)"
+      },
+      "licenses": [
+        {
+          "license": {
+            "id": "Llama3-Community-License"
+          }
+        }
+      ],
+      "description": "Deployed to production inference cluster on 2026-07-20.",
+      "hashes": [
+        {
+          "alg": "SHA256",
+          "content": "69c5ca4b914f58e4faea352d47e3193dda0a8ff88d7be187152b5f7b17827d82"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "registry.acme.internal/models/support-triage/v3",
+          "comment": "ref_type=internal_registry"
+        }
+      ],
+      "properties": [
+        {
+          "name": "msbom:component_type",
+          "value": "merged_model"
+        },
+        {
+          "name": "msbom:quantization",
+          "value": "int8 (bitsandbytes)"
+        },
+        {
+          "name": "msbom:license_note",
+          "value": "Inherits base model license terms; 'Built with Llama 3' notice included in model card."
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "basemodel-04428075e3b2",
+      "dependsOn": [
+        "tokenizer-2fdf0156a3b2"
+      ]
+    },
+    {
+      "ref": "dataset-7f989f6c6b81",
+      "dependsOn": [
+        "dataset-718678d4512a"
+      ]
+    },
+    {
+      "ref": "dataset-765183bfe667",
+      "dependsOn": [
+        "dataset-7f989f6c6b81"
+      ]
+    },
+    {
+      "ref": "adapter-52251ea90482",
+      "dependsOn": [
+        "basemodel-04428075e3b2",
+        "dataset-765183bfe667"
+      ]
+    },
+    {
+      "ref": "merged-43a8454991f8",
+      "dependsOn": [
+        "basemodel-04428075e3b2",
+        "adapter-52251ea90482"
+      ]
+    }
+  ]
+}

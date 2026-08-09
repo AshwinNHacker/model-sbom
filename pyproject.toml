@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "model-sbom"
+version = "1.0.0"
+description = "Model supply chain SBOM: base model, fine-tuning data lineage, and adapter provenance tracking"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Ashwin N" }
+]
+keywords = [
+    "sbom", "ml-bom", "model-provenance", "ai-supply-chain", "lora",
+    "fine-tuning", "data-lineage", "ai-governance", "ml-security"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Software Development :: Documentation",
+]
+dependencies = []
+
+[project.optional-dependencies]
+schema = ["jsonschema>=4.0"]
+dev = ["pytest>=7.4", "pytest-cov>=4.1", "ruff>=0.4", "jsonschema>=4.0"]
+
+[project.scripts]
+msbom = "msbom.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/AshwinNHacker/model-sbom"
+Issues = "https://github.com/AshwinNHacker/model-sbom/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+msbom = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+ignore = ["EXE001"]

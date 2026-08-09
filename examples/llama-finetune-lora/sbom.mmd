@@ -1,0 +1,28 @@
+flowchart LR
+    basemodel_04428075e3b2(["Llama-3-8B\nv3.0"])
+    tokenizer_2fdf0156a3b2{{"llama-3-tokenizer\nv3.0"}}
+    dataset_718678d4512a[("support-tickets-raw-export\nv2026-05-01")]
+    dataset_7f989f6c6b81[("support-tickets-filtered\nv2026-05-10")]
+    dataset_765183bfe667[("support-tickets-clean-final\nv2026-06-01")]
+    adapter_52251ea90482[/"acme-support-triage-lora\nv3"/]
+    merged_43a8454991f8[["acme-support-triage-model-deploy\nv3"]]
+    basemodel_04428075e3b2 -- INCLUDES --> tokenizer_2fdf0156a3b2
+    dataset_7f989f6c6b81 -- SOURCED_FROM --> dataset_718678d4512a
+    dataset_765183bfe667 -- SOURCED_FROM --> dataset_7f989f6c6b81
+    adapter_52251ea90482 -- DERIVED_FROM --> basemodel_04428075e3b2
+    adapter_52251ea90482 -- TRAINED_ON --> dataset_765183bfe667
+    merged_43a8454991f8 -- MERGED_FROM --> basemodel_04428075e3b2
+    merged_43a8454991f8 -- MERGED_FROM --> adapter_52251ea90482
+
+    class basemodel_04428075e3b2 baseModel;
+    class tokenizer_2fdf0156a3b2 tokenizer;
+    class dataset_718678d4512a dataset;
+    class dataset_7f989f6c6b81 dataset;
+    class dataset_765183bfe667 dataset;
+    class adapter_52251ea90482 adapter;
+    class merged_43a8454991f8 mergedModel;
+    classDef baseModel fill:#dbeafe,stroke:#1d4ed8,color:#1e3a8a;
+    classDef dataset fill:#dcfce7,stroke:#15803d,color:#14532d;
+    classDef adapter fill:#fef3c7,stroke:#b45309,color:#78350f;
+    classDef mergedModel fill:#ede9fe,stroke:#6d28d9,color:#4c1d95;
+    classDef tokenizer fill:#fee2e2,stroke:#b91c1c,color:#7f1d1d;
